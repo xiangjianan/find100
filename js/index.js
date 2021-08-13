@@ -1,6 +1,6 @@
 // 动画
 jQuery.extend(jQuery.easing, {
-    easeOutQuart: function(x, t, b, c, d) {
+    easeOutQuart: function (x, t, b, c, d) {
         return -c * ((t = t / d - 1) * t * t * t - 1) + b;
     },
 });
@@ -15,7 +15,7 @@ function init_html(mode) {
         <div class="num"></div>
     </div>`
     let div_num = `<div class="col-md-1">
-        <div class="num"></div>
+        <div class="num" id=""></div>
     </div>`
     let div_container = '';
     let div_row = '<div class="row">';
@@ -38,9 +38,10 @@ function init_html(mode) {
         allNum.push(i);
     }
     $('.num').each(
-        function() {
+        function () {
             let index = Math.floor((Math.random() * allNum.length));
             $(this).text(allNum[index]);
+            $(this).attr('id', allNum[index]);
             allNum.splice(index, 1);
         }
     )
@@ -71,7 +72,8 @@ function normalMode(mode) {
 // 大师模式
 function masterMode(params) {
     let curNum = 0;
-    $('.num').addClass('master');
+    $('.num').removeClass('master');
+    $(`#${curNum + 1}`).addClass('master');
     $('.num').click(function name(params) {
         if ($(this).text() == curNum + 1) {
             if (curNum + 1 == 100) {
@@ -81,6 +83,8 @@ function masterMode(params) {
                 curNum += 1;
                 $('.find_num').text(curNum);
             }
+            $('.num').removeClass('master');
+            $(`#${curNum + 1}`).addClass('master');
         }
     })
 }
@@ -111,11 +115,11 @@ function win(like_height_rand, like_height, like_left, like_left_margin, ease_ki
         height: 70,
         left: `${rand_width + parseInt(Math.random() * like_left - like_left_margin)}%`,
     }, 800, ease_kind);
-    setTimeout(function() {
+    setTimeout(function () {
         $like_img.animate({
             opacity: "0",
         }, 1000);
-        setTimeout(function() {
+        setTimeout(function () {
             $like_img.remove();
         }, 2000);
     }, 2000);
@@ -134,7 +138,7 @@ function youWin(mode) {
     }
     for (let i = 0; i < likeNum; i++) {
         let time = Math.floor((Math.random() * 1500)) + 500;
-        setTimeout(function() {
+        setTimeout(function () {
             win(like_height_rand, like_height, 5, 3, 'easeOutQuart');
         }, time);
     }
@@ -164,6 +168,6 @@ $('.segmented-control__2').click(function name(params) {
 });
 
 // 图片预加载
-$("div.like-img-loaded>img").each(function(index) {
+$("div.like-img-loaded>img").each(function (index) {
     $(this).attr('src', `static/img/like${index + 1}.png`);
 });
